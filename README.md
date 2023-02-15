@@ -1,3 +1,3 @@
 # crates-frontend
 
-Demo - Goes with Scatter.ly
+Demo CodeComponent with GitHub Actions
