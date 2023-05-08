@@ -1,0 +1,10 @@
+apiVersion: opencontext.com/v1alpha1
+kind: CodeComponentSidecar
+metadata:
+  namespace: scatter-ly
+  name: crates-frontend-extras
+spec:
+  codecomponent: scatter-ly/crates-frontend
+  platform: crates
+  lifecycle: production
+  subcomponentOf: [scatter-ly/crates-erp]
