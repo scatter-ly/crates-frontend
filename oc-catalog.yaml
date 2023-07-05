@@ -5,6 +5,6 @@ metadata:
   name: crates-frontend-extras
 spec:
   codecomponent: scatter-ly/crates-frontend
-  platform: crates
+  service: crates
   lifecycle: production
   subcomponentOf: [scatter-ly/crates-erp]
