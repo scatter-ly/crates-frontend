@@ -1,0 +1,6 @@
+codecomponent:
+  service: scatter-ly/crates
+  lifecycle: production
+  priority: 1
+  sla: 24x7
+  subcomponentOf: [scatter-ly/crates-erp]
