@@ -12,6 +12,7 @@
   "main": "dist/index.js",
   "dependencies": {
     "chokidar": "^3.5.3",
+    "ejs": "^3.1.6",
     "express": "^4.18.2",
     "typescript": "^4.7.4"
   },
@@ -46,8 +47,7 @@
     "artifactregistry-login": "npx google-artifactregistry-auth",
     "lint": "eslint --ext .js,.ts .",
     "prettier:check": "prettier --check .",
-    "lock:check": "yarn-lock-check",
-    "postinstall": "npx typesync"
+    "lock:check": "yarn-lock-check"
   },
   "prettier": "@spotify/prettier-config",
   "lint-staged": {
