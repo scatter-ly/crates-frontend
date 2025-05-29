@@ -37,7 +37,7 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ env.cache-prefix }}-${{ matrix.node-version }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
-  
+
       # If we get a cache hit for node_modules, there's no need to bring in the global
       # yarn cache or run yarn install, as all dependencies will be installed already.
       - name: find location of global yarn cache
@@ -45,7 +45,7 @@ jobs:
         if: steps.cache-modules.outputs.cache-hit != 'true'
         shell: bash
         run: echo "dir=$([[ "$(yarn --version)" =~ "1.*" ]] && yarn cache dir || yarn config get cacheFolder)" >> $GITHUB_OUTPUT
-  
+
       - name: cache global yarn cache
         uses: actions/cache@v4
         if: steps.cache-modules.outputs.cache-hit != 'true'
@@ -54,7 +54,7 @@ jobs:
           key: ${{ env.cache-prefix }}-${{ matrix.node-version }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
           restore-keys: |
             ${{ env.cache-prefix }}-${{ matrix.node-version }}-node_modules-
-  
+
       - name: yarn install
         if: steps.cache-modules.outputs.cache-hit != 'true'
         shell: bash
@@ -88,7 +88,7 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ env.cache-prefix }}-${{ matrix.node-version }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
-  
+
       # If we get a cache hit for node_modules, there's no need to bring in the global
       # yarn cache or run yarn install, as all dependencies will be installed already.
       - name: find location of global yarn cache
@@ -96,7 +96,7 @@ jobs:
         if: steps.cache-modules.outputs.cache-hit != 'true'
         shell: bash
         run: echo "dir=$([[ "$(yarn --version)" =~ "1.*" ]] && yarn cache dir || yarn config get cacheFolder)" >> $GITHUB_OUTPUT
-  
+
       - name: cache global yarn cache
         uses: actions/cache@v4
         if: steps.cache-modules.outputs.cache-hit != 'true'
@@ -105,7 +105,7 @@ jobs:
           key: ${{ env.cache-prefix }}-${{ matrix.node-version }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
           restore-keys: |
             ${{ env.cache-prefix }}-${{ matrix.node-version }}-node_modules-
-  
+
       - name: yarn install
         if: steps.cache-modules.outputs.cache-hit != 'true'
         shell: bash
@@ -149,7 +149,7 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ env.cache-prefix }}-${{ matrix.node-version }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
-  
+
       # If we get a cache hit for node_modules, there's no need to bring in the global
       # yarn cache or run yarn install, as all dependencies will be installed already.
       - name: find location of global yarn cache
@@ -157,7 +157,7 @@ jobs:
         if: steps.cache-modules.outputs.cache-hit != 'true'
         shell: bash
         run: echo "dir=$([[ "$(yarn --version)" =~ "1.*" ]] && yarn cache dir || yarn config get cacheFolder)" >> $GITHUB_OUTPUT
-  
+
       - name: cache global yarn cache
         uses: actions/cache@v4
         if: steps.cache-modules.outputs.cache-hit != 'true'
@@ -166,7 +166,7 @@ jobs:
           key: ${{ env.cache-prefix }}-${{ matrix.node-version }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
           restore-keys: |
             ${{ env.cache-prefix }}-${{ matrix.node-version }}-node_modules-
-  
+
       - name: yarn install
         if: steps.cache-modules.outputs.cache-hit != 'true'
         shell: bash
@@ -214,7 +214,7 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ env.cache-prefix }}-${{ matrix.node-version }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
-  
+
       # If we get a cache hit for node_modules, there's no need to bring in the global
       # yarn cache or run yarn install, as all dependencies will be installed already.
       - name: find location of global yarn cache
@@ -222,7 +222,7 @@ jobs:
         if: steps.cache-modules.outputs.cache-hit != 'true'
         shell: bash
         run: echo "dir=$([[ "$(yarn --version)" =~ "1.*" ]] && yarn cache dir || yarn config get cacheFolder)" >> $GITHUB_OUTPUT
-  
+
       - name: cache global yarn cache
         uses: actions/cache@v4
         if: steps.cache-modules.outputs.cache-hit != 'true'
@@ -231,7 +231,7 @@ jobs:
           key: ${{ env.cache-prefix }}-${{ matrix.node-version }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
           restore-keys: |
             ${{ env.cache-prefix }}-${{ matrix.node-version }}-node_modules-
-  
+
       - name: yarn install
         if: steps.cache-modules.outputs.cache-hit != 'true'
         shell: bash
