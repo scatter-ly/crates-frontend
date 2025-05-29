@@ -184,11 +184,18 @@ jobs:
         shell: bash
         run: '[[ "$(yarn --version)" =~ "1.*" ]] && yarn install --frozen-lockfile || yarn install --immutable'
 
-      - name: yarn build
-        run: yarn build
+      - name: Generate archive
+        run: yarn pack
 
-      - name: Publish NPM package to GitHub
-        run: yarn npm publish --provenance
+      - name: Publish NPM package to GitHub with latest tag
+        if: github.event.release.prerelease == false
+        run: npm publish package.tgz --tag latest --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish NPM package to GitHub with next tag
+        if: github.event.release.prerelease == true
+        run: npm publish package.tgz --tag next --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -258,6 +265,13 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker Setup Buildx
+        id: buildx
+        uses:  docker/setup-buildx-action@v3
+        with: 
+          driver: docker-container
+          driver-opts: image=moby/buildkit:master,network=host
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
