@@ -134,6 +134,9 @@ jobs:
     permissions:
       packages: write
       contents: read
+      attestations: write
+      id-token: write
+
     needs: install
     strategy:
       fail-fast: false
