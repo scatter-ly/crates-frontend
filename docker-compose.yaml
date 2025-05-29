@@ -1,12 +1,8 @@
-version: '3'
 services:
-  testenv:
-    image: us-docker.pkg.dev/vpc-host-nonprod-345521/np-docker/testenv:latest
-    build: 
+  crates-frontend:
+    image: ghcr.io/scatter-ly/crates-frontend:latest
+    build:
       context: ./
       dockerfile: ./Dockerfile
     ports:
       - '8080:8080'
-    volumes:
-      # map your github credentials file and the app-config-credentials file
-      - ${PWD}/app-config-locations.local.yaml:/app/configs/locations.yaml

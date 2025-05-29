@@ -10,7 +10,9 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.listen(port, () => {
-  console.log(`⚡️[server]: Crates Frontend Server is running at https://localhost:${port}`);
+  console.log(
+    `⚡️[server]: Crates Frontend Server is running at https://localhost:${port}`,
+  );
 });
 
 console.debug('Process environment', process.env);

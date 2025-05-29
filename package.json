@@ -1,10 +1,10 @@
 {
-  "name": "@scatterly/crates-frontend",
+  "name": "@scatter-ly/crates-frontend",
   "version": "0.2.1",
-  "private": true,
   "license": "UNLICENSED",
-  "opencontext": {
-    "role": "node-library"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scatter-ly/crates-frontend.git"
   },
   "engines": {
     "node": "20"
@@ -39,14 +39,10 @@
   },
   "scripts": {
     "dev": "yarn build:watch && node dist/index.js",
-    "build:watch": "yarn env:dev && tsc --watch --noEmit false",
-    "build:dev": "yarn env:dev && tsc --noEmit false",
+    "build": "NODE_ENV=production tsc --noEmit false",
+    "build:dev": "tsc --noEmit false",
+    "build:watch": "tsc --watch --noEmit false",
     "clean": "rm -rf node_modules/.cache && rm -rf dist",
-    "env:dev": "if [ -L .env ]; then rm .env; fi && ln -s .env.development .env",
-    "env:test": "if [ -L .env ]; then rm .env; fi && ln -s .env.test .env",
-    "env:qa": "if [ -L .env ]; then rm .env; fi && ln -s .env.qa .env",
-    "env:staging": "if [ -L .env ]; then rm .env; fi && ln -s .env.staging .env",
-    "env:prod": "if [ -L .env ]; then rm .env; fi && ln -s .env.production .env",
     "artifactregistry-login": "npx google-artifactregistry-auth",
     "lint": "eslint --ext .js,.ts .",
     "prettier:check": "prettier --check .",
@@ -64,5 +60,6 @@
     "*.{json,md}": [
       "prettier --write"
     ]
-  }
+  },
+  "packageManager": "yarn@3.8.3"
 }
