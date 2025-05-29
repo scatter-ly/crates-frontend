@@ -192,13 +192,13 @@ jobs:
 
       - name: Publish NPM package to GitHub with latest tag
         if: github.event.release.prerelease == false
-        run: npm publish package.tgz --tag latest --provenance
+        run: npm publish package.tgz --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish NPM package to GitHub with next tag
         if: github.event.release.prerelease == true
-        run: npm publish package.tgz --tag next --provenance
+        run: npm publish package.tgz --tag next
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -290,8 +290,6 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=scatter-ly/crates-frontend:buildcache
-          cache-to: type=registry,ref=scatter-ly/crates-frontend:buildcache,mode=max
 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v2
