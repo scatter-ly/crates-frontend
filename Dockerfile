@@ -38,7 +38,7 @@ COPY --chown=node:node yarn.lock package.json ./
 COPY --chown=node:node dist ./dist
 
 RUN --mount=type=cache,target=/home/node/.yarn/berry/cache,sharing=locked,uid=1000,gid=1000 \
-    yarn install --immutable --immutable-cache --check-cache
+    yarn install --immutable
 
 # Then copy the rest of the backend bundle, along with any other files we might want.
 CMD ["node", "dist/index.js"]
