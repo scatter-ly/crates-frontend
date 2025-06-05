@@ -1,0 +1,73 @@
+name: Test long running
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'GitHub ref to use for deployment. i.e. refs/tags/v0.5.0'
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: 20.x
+  NODE_OPTIONS: --max-old-space-size=4096
+  cache-prefix: 'crates-frontend'
+
+jobs:
+  # This step only runs yarn install to make sure that an exact match is available
+  # in the cache. The two following verify and tests jobs then always install from cache.
+  install:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20.x]
+    env:
+      CI: true
+      NODE_OPTIONS: --max-old-space-size=8192
+
+    name: Install ${{ matrix.node-version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: cache all node_modules
+        id: cache-modules
+        uses: actions/cache@v4
+        with:
+          path: '**/node_modules'
+          key: ${{ env.cache-prefix }}-${{ matrix.node-version }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
+
+      # If we get a cache hit for node_modules, there's no need to bring in the global
+      # yarn cache or run yarn install, as all dependencies will be installed already.
+      - name: find location of global yarn cache
+        id: yarn-cache
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        shell: bash
+        run: echo "dir=$([[ "$(yarn --version)" =~ "1.*" ]] && yarn cache dir || yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+
+      - name: cache global yarn cache
+        uses: actions/cache@v4
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ env.cache-prefix }}-${{ matrix.node-version }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
+          restore-keys: |
+            ${{ env.cache-prefix }}-${{ matrix.node-version }}-node_modules-
+
+      - name: yarn install
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        shell: bash
+        run: '[[ "$(yarn --version)" =~ "1.*" ]] && yarn install --frozen-lockfile || yarn install --immutable'
+
+      - name: Test
+        shell: bash
+        run: 'sleep 5m && yarn build'
+

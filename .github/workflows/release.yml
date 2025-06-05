@@ -1,4 +1,4 @@
-name: Build
+name: Release crates-frontend
 on:
   push:
     branches:
@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: 16.x
+  NODE_VERSION: 20.x
   NODE_OPTIONS: --max-old-space-size=4096
   cache-prefix: 'crates-frontend'
 
