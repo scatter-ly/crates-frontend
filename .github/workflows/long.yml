@@ -1,11 +1,6 @@
 name: Test long running
 on:
   workflow_dispatch:
-    inputs:
-      ref:
-        description: 'GitHub ref to use for deployment. i.e. refs/tags/v0.5.0'
-        required: true
-        type: string
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

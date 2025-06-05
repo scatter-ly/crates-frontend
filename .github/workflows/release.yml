@@ -191,13 +191,13 @@ jobs:
         run: yarn pack
 
       - name: Publish NPM package to GitHub with latest tag
-        if: github.event.release.prerelease == false
+        if: github.event.release.prerelease == false && github.event_name == 'release'
         run: npm publish package.tgz --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish NPM package to GitHub with next tag
-        if: github.event.release.prerelease == true
+        if: github.event.release.prerelease == true && github.event_name == 'release'
         run: npm publish package.tgz --tag next
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
