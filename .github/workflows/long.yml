@@ -65,4 +65,3 @@ jobs:
       - name: Test
         shell: bash
         run: 'sleep 5m && yarn build'
-
