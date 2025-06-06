@@ -211,7 +211,6 @@ jobs:
           name=$(echo $gitInfo | awk -F'|' '{print $3}')
           git config --global user.email "$email"
           git config --global user.name "$name"
-          npm version minor
           npm publish package.tgz --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
