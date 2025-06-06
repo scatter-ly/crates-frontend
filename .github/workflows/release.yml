@@ -328,10 +328,12 @@ jobs:
 
       - name: Check container images
         run: |-
+          set -x
           echo "Docker tags ..."
           echo ${{steps.meta.outputs.tags }}
+          echo ""
           docker images
-          docker pull ${{ steps.meta.outputs.tags }}
+          # docker pull ${{ steps.meta.outputs.tags }}
 
       - name: Create SBOM for container
         uses: anchore/sbom-action@v0
