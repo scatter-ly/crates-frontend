@@ -192,21 +192,19 @@ jobs:
         uses: anchore/sbom-action@v0
         with:
           artifact-name: ${{ github.repository }}-sbom.spdx.json
-          upload-artifact: false
-          upload-release-assets: false
+          output-file: ${{ github.repository }}-sbom.spdx.json
           path: ${{ github.workspace }}
 
       - name: Generate CycloneDX SBOM for NPM
         uses: anchore/sbom-action@v0
         with:
           artifact-name: ${{ github.repository }}-sbom.cdx.json
-          upload-artifact: false
-          upload-release-assets: false
+          output-file: ${{ github.repository }}-sbom.cdx.json
           path: ${{ github.workspace }}
           format: cyclonedx-json
 
       - name: Generate archive
-        run: ls -ld /tmp/sbom-action-* && yarn pack
+        run: ls -la && yarn pack
 
       - name: Publish NPM package to GitHub with latest tag
         if: github.event.release.prerelease == false && github.event_name == 'release'
@@ -324,12 +322,14 @@ jobs:
       - name: Create SBOM for container
         uses: anchore/sbom-action@v0
         with:
-          artifact-name: ${{ github.repository }}-container-sbox.spdx
+          artifact-name: ${{ github.repository }}-container-sbox.spdx.json
+          output-file: ${{ github.repository }}-container-sbom.spdx.json
           image: ${{ steps.meta.outputs.tags }}
 
       - name: Generate CycloneDX SBOM for NPM
         uses: anchore/sbom-action@v0
         with:
-          artifact-name: ${{ github.repository }}-container-sbom.cdx
+          artifact-name: ${{ github.repository }}-container-sbom.cdx.json
+          output-file: ${{ github.repository }}-container-sbom.cdx.json
           format: cyclonedx-json
           image: ${{ steps.meta.outputs.tags }}
