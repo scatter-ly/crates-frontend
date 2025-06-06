@@ -194,12 +194,12 @@ jobs:
       - name: Generate SPDX SBOM for NPM
         uses: anchore/sbom-action@v0
         with:
-          artifact-name: ${{ github.repository }}-sbom.spdx
+          artifact-name: ${{ github.repository }}-sbom.spdx.json
 
       - name: Generate CycloneDX SBOM for NPM
         uses: anchore/sbom-action@v0
         with:
-          artifact-name: ${{ github.repository }}-sbom.cdx
+          artifact-name: ${{ github.repository }}-sbom.cdx.json
           format: cyclonedx-json
 
       - name: Generate archive
