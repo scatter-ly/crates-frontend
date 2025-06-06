@@ -189,17 +189,15 @@ jobs:
         run: '[[ "$(yarn --version)" =~ "1.*" ]] && yarn install --frozen-lockfile || yarn install --immutable'
 
       - name: Generate SPDX SBOM for NPM
+        id: npm-spdx
         uses: anchore/sbom-action@v0
         with:
-          artifact-name: ${{ github.repository }}-sbom.spdx.json
-          output-file: ${{ github.repository }}-sbom.spdx.json
           path: ${{ github.workspace }}
 
       - name: Generate CycloneDX SBOM for NPM
+        id: npm-cdx
         uses: anchore/sbom-action@v0
         with:
-          artifact-name: ${{ github.repository }}-sbom.cdx.json
-          output-file: ${{ github.repository }}-sbom.cdx.json
           path: ${{ github.workspace }}
           format: cyclonedx-json
 
@@ -320,16 +318,14 @@ jobs:
           push-to-registry: true
 
       - name: Create SBOM for container
+        id: container-spdx
         uses: anchore/sbom-action@v0
         with:
-          artifact-name: ${{ github.repository }}-container-sbox.spdx.json
-          output-file: ${{ github.repository }}-container-sbom.spdx.json
           image: ${{ steps.meta.outputs.tags }}
 
       - name: Generate CycloneDX SBOM for NPM
+        id: container-cdx
         uses: anchore/sbom-action@v0
         with:
-          artifact-name: ${{ github.repository }}-container-sbom.cdx.json
-          output-file: ${{ github.repository }}-container-sbom.cdx.json
           format: cyclonedx-json
           image: ${{ steps.meta.outputs.tags }}
