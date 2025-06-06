@@ -326,6 +326,11 @@ jobs:
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
 
+      - name: Check container images
+        run: |-
+          docker images
+          docker pull ${{ steps.meta.outputs.tags }}
+
       - name: Create SBOM for container
         uses: anchore/sbom-action@v0
         with:
