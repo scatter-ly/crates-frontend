@@ -188,6 +188,9 @@ jobs:
         shell: bash
         run: '[[ "$(yarn --version)" =~ "1.*" ]] && yarn install --frozen-lockfile || yarn install --immutable'
 
+      - name: debug
+        run: env && pwd && ls -l
+
       - name: Generate SPDX SBOM for NPM
         uses: anchore/sbom-action@v0
         with:
