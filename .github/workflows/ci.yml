@@ -175,8 +175,13 @@ jobs:
       - name: yarn build
         run: yarn build
 
+      - name: Generate archive
+        run: yarn pack
+
       - name: Publish NPM package to GitHub
-        run: yarn npm publish --provenance
+        run: |-
+          npm version prerelease --preid=pr
+          npm publish package.tgz --tag pr
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -263,10 +268,3 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=scatter-ly/crates-frontend:buildcache
           cache-to: type=registry,ref=scatter-ly/crates-frontend:buildcache,mode=max
-
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v2
-        with:
-          subject-name: ghcr.io/${{ github.repository }}
-          subject-digest: ${{ steps.push.outputs.digest }}
-          push-to-registry: true

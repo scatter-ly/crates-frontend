@@ -132,8 +132,9 @@ jobs:
   build-npm:
     runs-on: ubuntu-latest
     permissions:
+      actions: read
       packages: write
-      contents: read
+      contents: write
       attestations: write
       id-token: write
 
@@ -192,21 +193,39 @@ jobs:
 
       - name: Publish NPM package to GitHub with latest tag
         if: github.event.release.prerelease == false && github.event_name == 'release'
-        run: npm publish package.tgz --tag latest
+        run: |-
+          npm version minor
+          npm publish package.tgz --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish NPM package to GitHub with next tag
         if: github.event.release.prerelease == true && github.event_name == 'release'
-        run: npm publish package.tgz --tag next
+        run: |-
+          npm version prerelease --preid=next
+          npm publish package.tgz --tag next
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate SPDX SBOM for NPM
+        uses: anchore/sbom-action@v0
+        with:
+          artifact-name: ${{ github.repository }}-sbom.spdx
+          path: ./
+
+      - name: Generate CycloneDX SBOM for NPM
+        uses: anchore/sbom-action@v0
+        with:
+          artifact-name: ${{ github.repository }}-sbom.cdx
+          format: cyclonedx-json
+          path: ./
 
   build-container:
     runs-on: ubuntu-latest
     permissions:
+      actions: read
       packages: write
-      contents: read
+      contents: write
       attestations: write
       id-token: write
     needs: install
@@ -297,3 +316,16 @@ jobs:
           subject-name: ghcr.io/${{ github.repository }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+
+      - name: Create SBOM for container
+        uses: anchore/sbom-action@v0
+        with:
+          artifact-name: ${{ github.repository }}-container-sbox.spdx
+          image: ${{ steps.meta.outputs.tags }}
+
+      - name: Generate CycloneDX SBOM for NPM
+        uses: anchore/sbom-action@v0
+        with:
+          artifact-name: ${{ github.repository }}-container-sbom.cdx
+          format: cyclonedx-json
+          image: ${{ steps.meta.outputs.tags }}
