@@ -195,11 +195,13 @@ jobs:
         uses: anchore/sbom-action@v0
         with:
           artifact-name: ${{ github.repository }}-sbom.spdx.json
+          path: ${{ github.workspace }}
 
       - name: Generate CycloneDX SBOM for NPM
         uses: anchore/sbom-action@v0
         with:
           artifact-name: ${{ github.repository }}-sbom.cdx.json
+          path: ${{ github.workspace }}
           format: cyclonedx-json
 
       - name: Generate archive
