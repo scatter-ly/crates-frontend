@@ -205,6 +205,12 @@ jobs:
       - name: Publish NPM package to GitHub with latest tag
         if: github.event.release.prerelease == false && github.event_name == 'release'
         run: |-
+          # get git short sha, commit email, commit name
+          gitInfo=$(git log --pretty=format:"%h|%ce|%cn" -1)
+          email=$(echo $gitInfo | awk -F'|' '{print $2}')
+          name=$(echo $gitInfo | awk -F'|' '{print $3}')
+          git config --global user.email "$email"
+          git config --global user.name "$name"
           npm version minor
           npm publish package.tgz --tag latest
         env:
@@ -213,6 +219,12 @@ jobs:
       - name: Publish NPM package to GitHub with next tag
         if: github.event.release.prerelease == true && github.event_name == 'release'
         run: |-
+          # get git short sha, commit email, commit name
+          gitInfo=$(git log --pretty=format:"%h|%ce|%cn" -1)
+          email=$(echo $gitInfo | awk -F'|' '{print $2}')
+          name=$(echo $gitInfo | awk -F'|' '{print $3}')
+          git config --global user.email "$email"
+          git config --global user.name "$name"
           npm version prerelease --preid=next
           npm publish package.tgz --tag next
         env:
