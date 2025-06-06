@@ -188,6 +188,17 @@ jobs:
         shell: bash
         run: '[[ "$(yarn --version)" =~ "1.*" ]] && yarn install --frozen-lockfile || yarn install --immutable'
 
+      - name: Generate SPDX SBOM for NPM
+        uses: anchore/sbom-action@v0
+        with:
+          artifact-name: ${{ github.repository }}-sbom.spdx
+
+      - name: Generate CycloneDX SBOM for NPM
+        uses: anchore/sbom-action@v0
+        with:
+          artifact-name: ${{ github.repository }}-sbom.cdx
+          format: cyclonedx-json
+
       - name: Generate archive
         run: yarn pack
 
@@ -206,19 +217,6 @@ jobs:
           npm publish package.tgz --tag next
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Generate SPDX SBOM for NPM
-        uses: anchore/sbom-action@v0
-        with:
-          artifact-name: ${{ github.repository }}-sbom.spdx
-          path: ./
-
-      - name: Generate CycloneDX SBOM for NPM
-        uses: anchore/sbom-action@v0
-        with:
-          artifact-name: ${{ github.repository }}-sbom.cdx
-          format: cyclonedx-json
-          path: ./
 
   build-container:
     runs-on: ubuntu-latest
