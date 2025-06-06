@@ -206,7 +206,7 @@ jobs:
           format: cyclonedx-json
 
       - name: Generate archive
-        run: pwd && ls -l && yarn pack
+        run: ls -ld /tmp/sbom-action-* && yarn pack
 
       - name: Publish NPM package to GitHub with latest tag
         if: github.event.release.prerelease == false && github.event_name == 'release'
