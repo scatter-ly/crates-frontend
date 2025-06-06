@@ -330,7 +330,7 @@ jobs:
         run: |-
           set -x
           echo "Docker tags ..."
-          echo ${{steps.meta.outputs.tags }}
+          echo ${{steps.meta.outputs.tags }} | awk -F'\\\\n' '{print $1}'
           echo ""
           docker images
           # docker pull ${{ steps.meta.outputs.tags }}
