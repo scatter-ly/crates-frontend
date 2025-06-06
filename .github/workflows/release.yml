@@ -326,22 +326,20 @@ jobs:
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
 
-      - name: Check container images
+      - name: Parse tags
+        id: parse-tags
         run: |-
-          set -x
-          echo "Docker tags ..."
-          echo ${{steps.meta.outputs.tags }} | awk -F'\\\\n' '{print $1}'
-          echo ""
-          docker images
-          # docker pull ${{ steps.meta.outputs.tags }}
+          echo ${{steps.meta.outputs.tags }} > /tmp/docker-tags.txt
+          tag1=$(head -1 /tmp/docker-tags.txt)
+          echo "CHECK_TAG=$tag1" >> $GITHUB_ENV
 
       - name: Create SBOM for container
         uses: anchore/sbom-action@v0
         with:
-          image: ${{ steps.meta.outputs.tags }}
+          image: ${{ env.CHECK_TAG }}
 
       - name: Generate CycloneDX SBOM for NPM
         uses: anchore/sbom-action@v0
         with:
           format: cyclonedx-json
-          image: ${{ steps.meta.outputs.tags }}
+          image: ${{ env.CHECK_TAG }}
