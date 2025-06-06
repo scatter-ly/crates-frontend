@@ -328,6 +328,8 @@ jobs:
 
       - name: Check container images
         run: |-
+          echo "Docker tags ..."
+          echo ${{steps.meta.outputs.tags }}
           docker images
           docker pull ${{ steps.meta.outputs.tags }}
 
